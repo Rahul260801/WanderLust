@@ -1,7 +1,6 @@
 if(process.env.NODE_ENV!="production"){
   require('dotenv').config();
 }
-
 // console.log(process.env.SECRET);
 const express = require("express");
 const app = express();
@@ -22,7 +21,7 @@ const reviewsRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
  
 // const MONGO_URL="mongodb://127.0.0.1:27017/wanderlust";
-const dbUrl = process.env.ATLASDB_URL;
+const dbUrl = process.env.ATLASDB_URL;    
 
 main()
   .then(() => {
@@ -32,8 +31,11 @@ main()
     console.log(err);
   });
 
+// async function main() {
+//   await mongoose.connect(MONGO_URL);
+// }
+
 async function main() {
-  // await mongoose.connect(MONGO_URL);
   await mongoose.connect(dbUrl);
 }
 
@@ -57,7 +59,7 @@ store.on("error",()=>{
 })
 
 const sessionOption = {
-  store,
+   store,
   secret:process.env.SECRET,
   resave: false,
   saveUninitialized:true,
@@ -67,6 +69,17 @@ const sessionOption = {
     httpOnly:true,
   },
 };
+
+// const sessionOption = {
+//   secret:process.env.SECRET,
+//   resave: false,
+//   saveUninitialized:true,
+//   cookie:{
+//     expires:Date.now() + 7 * 24 *60*60*1000,
+//     maxAge:7 * 24 *60*60*1000,
+//     httpOnly:true,
+//   },
+// };
 
 
 // app.get("/",(req,res) =>{
